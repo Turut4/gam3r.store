@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Produto {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  descricao   String
+  marca       String
+  modelo      String
+  imagem      String
+  nota        Float
+  videoReview String
+  tags        String[]
+
+  precoBase        Float
+  precoPromocional Float
+  menorPreco       Float
+  maiorPreco       Float
+  precoMedio       Float
+
+  especificacoes Json
+
+  itemPedido ItemPedido[]
+
+  @@map("produtos")
+}
+
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  username   String
+  senha      String
+  email      String
+  criado     DateTime @default(now())
+  atualizado DateTime @updatedAt()
+
+  pedidos Pedido[]
+}
+
+model Pedido {
+  id             Int      @id @default(autoincrement())
+  data           DateTime @default(now())
+  valorTotal     Float
+  status         String
+  formaPagamento String
+
+  entrega   PedidoEntrega @relation(fields: [entregaId], references: [id])
+  entregaId Int           @unique
+
+  itens ItemPedido[]
+
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+
+  @@map("pedido")
+}
+
+model ItemPedido {
+  id            Int   @id @default(autoincrement())
+  quantidade    Int
+  precoUnitario Float
+
+  pedido   Pedido @relation(fields: [pedidoId], references: [id])
+  pedidoId Int
+
+  produto   Produto @relation(fields: [produtoId], references: [id])
+  produtoId Int
+
+  @@map("item_pedido")
+}
+
+model PedidoEntrega {
+  id          Int    @id @default(autoincrement())
+  nome        String
+  email       String
+  cpf         String
+  logradouro  String
+  complemento String
+  cidade      String
+  estado      String
+  telefone    String
+
+  pedido Pedido?
+
+  @@map("pedido_entrega")
+}
