@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaProvider } from 'src/db/prisma.provider';
 import { Pedido as PedidoModel } from '@prisma/client';
-import { CriarPedidoDTO } from 'src/dto/pedido/criar-pedido.dto';
+import { CriarPedidoDto } from 'src/dto/pedido/criar-pedido.dto';
 
 @Injectable()
 export class PedidoPrisma {
@@ -45,7 +45,7 @@ export class PedidoPrisma {
     }
   }
 
-  async salvar(pedido: CriarPedidoDTO): Promise<PedidoModel> {
+  async salvar(pedido: CriarPedidoDto): Promise<PedidoModel> {
     try {
       const produtos = await this.prisma.produto.findMany({
         where: { id: { in: pedido.itens.map((item) => item.produtoId) } },

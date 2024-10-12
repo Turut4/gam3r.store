@@ -47,7 +47,7 @@ class CriarItemPedidoDTO {
   quantidade: number;
 }
 
-export class CriarPedidoDTO {
+export class CriarPedidoDto {
   @IsNotEmpty()
   @IsEnum(Status)
   status: Status;

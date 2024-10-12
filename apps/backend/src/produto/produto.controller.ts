@@ -1,28 +1,30 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ProdutoPrisma } from './produto.prisma';
 import { Produto } from '@gstore/core';
+import { CriarProdutoDto } from 'src/dto/produto/criar-produto.dto';
+import { Produto as ProdutoModel } from '@prisma/client';
 
 @Controller('produtos')
 export class ProdutoController {
   constructor(private readonly repo: ProdutoPrisma) {}
 
   @Post()
-  salvarProduto(@Body() produto: Produto): Promise<void> {
-    return this.repo.salvar(produto);
+  async salvarProduto(@Body() produto: CriarProdutoDto) {
+    return await this.repo.salvar(produto);
   }
 
   @Get()
-  obterProdutos(): Promise<Produto[]> {
-    return this.repo.obter();
+  async obterProdutos() {
+    return await this.repo.obter();
   }
 
   @Get(':id')
-  obterProdutoPorId(@Param('id') id: string): Promise<Produto> {
-    return this.repo.obterPorId(+id);
+  async obterProdutoPorId(@Param('id') id: string) {
+    return await this.repo.obterPorId(+id);
   }
 
   @Delete(':id')
-  excluirProduto(@Param('id') id: string): Promise<void> {
-    return this.repo.excluir(+id);
+  async excluirProduto(@Param('id') id: string) {
+    return await this.repo.excluir(+id);
   }
 }

@@ -1,4 +1,9 @@
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+class Especificacoes {
+  destaque: string;
+  [key: string]: any;
+}
 
 export class CriarProdutoDto {
   @IsString()
@@ -41,10 +46,6 @@ export class CriarProdutoDto {
   precoMedio: number;
 
   @IsNotEmpty()
+  @Type(() => Especificacoes)
   especificacoes: Especificacoes;
-}
-
-class Especificacoes {
-  destaque: string;
-  [key: string]: any;
 }

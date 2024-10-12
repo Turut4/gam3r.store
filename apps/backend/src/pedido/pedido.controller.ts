@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PedidoPrisma } from './pedido.prisma';
-import { CriarPedidoDTO } from 'src/dto/pedido/criar-pedido.dto';
+import { CriarPedidoDto } from 'src/dto/pedido/criar-pedido.dto';
 
 @Controller('pedidos')
 export class PedidoController {
@@ -17,7 +17,7 @@ export class PedidoController {
   }
 
   @Post('')
-  async criarPedido(@Body() pedido: CriarPedidoDTO) {
+  async criarPedido(@Body() pedido: CriarPedidoDto) {
     return this.repo.salvar(pedido);
   }
 
